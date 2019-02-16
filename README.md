@@ -43,3 +43,16 @@ and inner class Features will have 2 other inner classes:
 
 10. The “view” package is where activities and App related views and their components should be located (ex: RecuclerView stuff)
 
+11. The “service” package is where the operations, classes & interface related to the Retrofit are located. We can also call this package “network”
+
+12. In every project that uses Retrofit, we need to have an Interface that holds all the different Http Requests signatures that we want to use in our App. Requests can be Get or Post for example. It is also the place where we define the End-points that should be added to our base-url. A simple example in our context here is this:
+Base Url = https://earthquake.usgs.gov/
+And End-Point with all parameters:
+fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02
+The Interface defines some methods that perform HTTP requests with annotation. Also the type of requests and the model class (that we have already created in Kotlin) that should parse the response that we wrote previously
+
+13 Create a class that allows us to get an initialized Retrofit instance that uses the base-url and that later we can use it to call the methods that we wrote or we will write later in our Interface. I call Retrofit Instance class RetrofitInstance and the interface RetrofitCalls.
+
+14. I write only 1 method in the RetrofitInstance class and it allows me to get an initialized version of the Retrofit instance. I call the method: setupRetrofitCalls(). It will return the single instance in our App RetrofitCalls
+
+15. Now I can call this static method from anywhere and return  from it a RetrofitCalls which I will use to call any the methods that I wrote in the interface and that will do different http calls. 
