@@ -25,13 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ArrayList<EarthquakeDataModel> arrayListEarthquakes = new ArrayList<EarthquakeDataModel>();
+    private ProgressBar recyclerProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("EarthQuakes");
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerProgressBar = (ProgressBar) findViewById(R.id.progress_bar_loading_earthquakes);
     }
 
     @Override
@@ -49,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
         switch (itemId){
             case R.id.show_result:
-                getDataFromApiUrl();
+                showProgressBar();
+                getDataFromApiUrl(item);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void getDataFromApiUrl() {
+    public void getDataFromApiUrl(final MenuItem item) {
         RetrofitCalls retrofitCalls
                 = RetrofitInstance.INSTANCE.setupRetrofitCalls();
 
@@ -85,16 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
                         arrayListEarthquakes.add(new EarthquakeDataModel(
                                 place,
-                                time,
-                                title
+                                title,
+                                // format the TimeStamp and save string time
+                                EarthquakeDataModel.Companion.getFormattedTime(time)
                         ));
                     }
                 }
 
-                // set RecyclerView
+                // set RecyclerView, remove progress bar, show number of earthquakes
+                removeProgressBar();
+                setTitle("EarthQuakes (" + arrayListEarthquakes.size() +")");
                 setupRecyclerView();
                 setAdapter();
-
+                // change Menu Item Title
+                item.setTitle("Refresh");
             }
 
             @Override
@@ -103,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void setupRecyclerView() {
         recyclerView.setHasFixedSize(false);
@@ -116,5 +121,13 @@ public class MainActivity extends AppCompatActivity {
         AdapterRV adapterRV = new AdapterRV(arrayListEarthquakes);
         recyclerView.setAdapter(adapterRV);
         adapterRV.notifyDataSetChanged();
+    }
+
+    private void showProgressBar(){
+        recyclerProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void removeProgressBar(){
+        recyclerProgressBar.setVisibility(View.GONE);
     }
 }
