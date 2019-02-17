@@ -62,3 +62,14 @@ The Interface defines some methods that perform HTTP requests with annotation. A
 17. The recyclerView holder gets reference to the component of the Item model used to fill the RecyclerView. I used CardView as container design for items.
 
 18. I created some UX progress bar feedback for waiting when the Retrofit Request is being processed before sending the response to the activity.
+
+
+------------- SCREENSHOTS-----------------
+
+During Api call
+
+![screenshot_1550401856](https://user-images.githubusercontent.com/20923486/52912115-1e43c680-32ad-11e9-81aa-5cca7de13e52.png) 
+
+Results
+
+![screenshot_1550401526](https://user-images.githubusercontent.com/20923486/52912052-55fe3e80-32ac-11e9-9b52-d3d970ae6a8e.png) 
