@@ -56,3 +56,9 @@ The Interface defines some methods that perform HTTP requests with annotation. A
 14. I write only 1 method in the RetrofitInstance class and it allows me to get an initialized version of the Retrofit instance. I call the method: setupRetrofitCalls(). It will return the single instance in our App RetrofitCalls
 
 15. Now I can call this static method from anywhere and return  from it a RetrofitCalls which I will use to call any the methods that I wrote in the interface and that will do different http calls. 
+
+16. I created a data container of type ArrayList that will hold all the data returned by the retrofit request on success. This ArrayList is used by the RecyclerView holder to bind data to the views or every single Item in the RecyclerView. Sure also the time of the eartjhquake is timestamp so I converted it to human readable
+
+17. The recyclerView holder gets reference to the component of the Item model used to fill the RecyclerView. I used CardView as container design for items.
+
+18. I created some UX progress bar feedback for waiting when the Retrofit Request is being processed before sending the response to the activity.
