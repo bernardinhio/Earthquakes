@@ -51,13 +51,13 @@ And End-Point with all parameters:
 fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02
 The Interface defines some methods that perform HTTP requests with annotation. Also the type of requests and the model class (that we have already created in Kotlin) that should parse the response that we wrote previously
 
-13 Create a class that allows us to get an initialized Retrofit instance that uses the base-url and that later we can use it to call the methods that we wrote or we will write later in our Interface. I call Retrofit Instance class RetrofitInstance and the interface RetrofitCalls.
+13. Create a class that allows us to get an initialized Retrofit instance that uses the base-url and that later we can use it to call the methods that we wrote or we will write later in our Interface. I call Retrofit Instance class RetrofitInstance and the interface RetrofitCalls.
 
 14. I write only 1 method in the RetrofitInstance class and it allows me to get an initialized version of the Retrofit instance. I call the method: setupRetrofitCalls(). It will return the single instance in our App RetrofitCalls
 
 15. Now I can call this static method from anywhere and return  from it a RetrofitCalls which I will use to call any the methods that I wrote in the interface and that will do different http calls. 
 
-16. I created a data container of type ArrayList that will hold all the data returned by the retrofit request on success. This ArrayList is used by the RecyclerView holder to bind data to the views or every single Item in the RecyclerView. Sure also the time of the eartjhquake is timestamp so I converted it to human readable
+16. I created a data container of type ArrayList that will hold all the data returned by the retrofit request on success. This ArrayList is used by the RecyclerView holder to bind data to the views or every single Item in the RecyclerView. Sure also the time of the eartjhquake is timestamp so I converted it to human readable using SimpleDateFormat
 
 17. The recyclerView holder gets reference to the component of the Item model used to fill the RecyclerView. I used CardView as container design for items.
 
