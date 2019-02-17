@@ -2,10 +2,13 @@ package bernardo.bernardinhio.retrofitgetdataearthquakeapi.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,10 +23,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerView;
+    private ArrayList<EarthquakeDataModel> arrayListEarthquakes = new ArrayList<EarthquakeDataModel>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     }
 
     @Override
@@ -65,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
                 EarthquakesRoot.Features[] features = earthquakesRoot.getFeatures();
 
-                ArrayList<EarthquakeDataModel> arrayListEarthquakes = new ArrayList<EarthquakeDataModel>();
                 String place;
                 String time;
                 String title;
@@ -84,11 +91,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
-                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
                 // set RecyclerView
-                setupRecyclerView(arrayListEarthquakes);
+                setupRecyclerView();
+                setAdapter();
 
             }
 
@@ -101,8 +106,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void setupRecyclerView(ArrayList<EarthquakeDataModel> arrayListEarthquakes) {
-
+    private void setupRecyclerView() {
+        recyclerView.setHasFixedSize(false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
+    private void setAdapter(){
+        AdapterRV adapterRV = new AdapterRV(arrayListEarthquakes);
+        recyclerView.setAdapter(adapterRV);
+        adapterRV.notifyDataSetChanged();
+    }
 }
