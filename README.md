@@ -63,6 +63,7 @@ The Interface defines some methods that perform HTTP requests with annotation. A
 
 18. I created some UX progress bar feedback for waiting when the Retrofit Request is being processed before sending the response to the activity.
 
+19. I added Swipe to refresh feature using Android SwipeRefreshLayout that will clear the ArrayList Items then filling them after calling the retrofit request of Api
 
 ------------- SCREENSHOTS-----------------
 
