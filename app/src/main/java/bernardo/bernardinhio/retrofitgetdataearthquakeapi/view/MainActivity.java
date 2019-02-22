@@ -1,5 +1,6 @@
 package bernardo.bernardinhio.retrofitgetdataearthquakeapi.view;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,14 +28,39 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<EarthquakeDataModel> arrayListEarthquakes = new ArrayList<EarthquakeDataModel>();
     private ProgressBar recyclerProgressBar;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MenuItem menuItemShow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setTitle("EarthQuakes");
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerProgressBar = (ProgressBar) findViewById(R.id.progress_bar_loading_earthquakes);
+
+        setupSwipeRefreshLayout();
+    }
+
+    private void setupSwipeRefreshLayout(){
+
+        swipeRefreshLayout = findViewById(R.id.swipe_to_refresh);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Start the SwipeToRefresh progress ba
+                swipeRefreshLayout.setRefreshing(true);
+
+                showProgressBar();
+
+                getDataFromApiUrlOnSwipeToRefresh();
+            }
+        });
     }
 
     @Override
@@ -54,12 +80,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.show_result:
                 showProgressBar();
                 getDataFromApiUrl(item);
+                menuItemShow = item;
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void getDataFromApiUrl(final MenuItem item) {
+    private void getDataFromApiUrlOnSwipeToRefresh(){
+
+        arrayListEarthquakes.clear();
+
+        getDataFromApiUrl(menuItemShow);
+    }
+
+    public void getDataFromApiUrl(final MenuItem menuItem) {
         RetrofitCalls retrofitCalls
                 = RetrofitInstance.INSTANCE.setupRetrofitCalls();
 
@@ -97,11 +131,17 @@ public class MainActivity extends AppCompatActivity {
 
                 // set RecyclerView, remove progress bar, show number of earthquakes
                 removeProgressBar();
+                // Stop the SwipeToRefresh progress bar
+                swipeRefreshLayout.setRefreshing(false);
+
+                // set menu title
                 setTitle("EarthQuakes (" + arrayListEarthquakes.size() +")");
+
                 setupRecyclerView();
                 setAdapter();
+
                 // change Menu Item Title
-                item.setTitle("Refresh");
+                menuItem.setTitle("Refresh");
             }
 
             @Override
