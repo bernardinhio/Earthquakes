@@ -71,6 +71,10 @@ During Api call
 
 ![screenshot_1550401856](https://user-images.githubusercontent.com/20923486/52912115-1e43c680-32ad-11e9-81aa-5cca7de13e52.png) 
 
+Swipe to Refresh
+
+![screenshot_1550872495](https://user-images.githubusercontent.com/20923486/53273692-f6ad8d80-36f4-11e9-9680-e528c2f39d67.png)
+
 Results
 
 ![screenshot_1550401526](https://user-images.githubusercontent.com/20923486/52912052-55fe3e80-32ac-11e9-9b52-d3d970ae6a8e.png) 
