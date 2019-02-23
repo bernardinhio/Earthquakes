@@ -1,10 +1,12 @@
 package bernardo.bernardinhio.retrofitgetdataearthquakeapi.view;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,11 +27,13 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private AdapterRV adapterRV;
     private ArrayList<EarthquakeDataModel> arrayListEarthquakes = new ArrayList<EarthquakeDataModel>();
     private ProgressBar recyclerProgressBar;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private MenuItem menuItemShow;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +144,9 @@ public class MainActivity extends AppCompatActivity {
                 setupRecyclerView();
                 setAdapter();
 
+                setOnRecyclerItemInteractionListener();
+                setOnRecyclerScrollListener();
+
                 // change Menu Item Title
                 menuItem.setTitle("Refresh");
             }
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setAdapter(){
-        AdapterRV adapterRV = new AdapterRV(arrayListEarthquakes);
+        adapterRV = new AdapterRV(arrayListEarthquakes);
         recyclerView.setAdapter(adapterRV);
         adapterRV.notifyDataSetChanged();
     }
@@ -169,5 +176,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void removeProgressBar(){
         recyclerProgressBar.setVisibility(View.GONE);
+    }
+
+    private void setOnRecyclerItemInteractionListener(){
+        OnRecyclerItemInteractionListener onRecyclerItemInteractionListener
+                = new OnRecyclerItemInteractionListener(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                ItemTouchHelper.LEFT,
+                arrayListEarthquakes,
+                adapterRV
+        );
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onRecyclerItemInteractionListener);
+
+        // attach the ItemTouchHelper to the RecyclerView
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void setOnRecyclerScrollListener(){
+        actionBar = this.getSupportActionBar();
+
+        OnRecyclerScrollListener onScrollListener
+                = new OnRecyclerScrollListener(actionBar, arrayListEarthquakes);
+
+        recyclerView.addOnScrollListener(onScrollListener);
     }
 }
