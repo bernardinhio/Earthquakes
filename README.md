@@ -67,13 +67,9 @@ Results
 
 18. I created some UX progress bar feedback for waiting when the Retrofit Request is being processed before sending the response to the activity.
 
-During Api call
-
-![screenshot_1550929818](https://user-images.githubusercontent.com/20923486/53287300-63b73680-377a-11e9-8c11-59a306c5d495.png) 
-
 19. I added Swipe to refresh feature using Android SwipeRefreshLayout that will clear the ArrayList Items then filling them after calling the retrofit request of Api
 
-Swipe to Refresh
+During Api call(menu button) and / or Swipe to Refresh
 
 ![screenshot_1550872495](https://user-images.githubusercontent.com/20923486/53273692-f6ad8d80-36f4-11e9-9680-e528c2f39d67.png) 
 
@@ -83,4 +79,8 @@ Drag & Swipe to delete
 
 ![screenshot_1550928880](https://user-images.githubusercontent.com/20923486/53287255-decc1d00-3779-11e9-97fc-5b810c51fe1e.png) 
 
-21. A final powerful feature from RecyclerView I implemented is using the OnScrollListener Android SDK class. In that feature I calculated the index of the Item that is on the top of the screen and I simply changed the Menu title to show the title of that Item. So when scrolling we are constantly changing the title of the Menu.
+21. Using the same ItemTouchHelper.SimpleCallback, I configure drag Item on long-press to to or botton, and then what I did as reaction is to change the indexes or the order of that Itel with the one that was exchanged with.
+
+![screenshot_1550930107](https://user-images.githubusercontent.com/20923486/53287336-1d160c00-377b-11e9-9c22-62a869fc8a4f.png) 
+
+22. A final powerful feature from RecyclerView I implemented is using the OnScrollListener Android SDK class. In that feature I calculated the index of the Item that is on the top of the screen and I simply changed the Menu title to show the title of that Item. So when scrolling we are constantly changing the title of the Menu.
