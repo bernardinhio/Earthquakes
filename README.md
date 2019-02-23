@@ -1,4 +1,4 @@
-The idea is to create a basic App that demonstrates the power of Retrofit Library compared to the old fashion more cumbersome technique of OkHttp with AsyncTask of Android SDK.
+The idea is to create a basic App that demonstrates the power of Retrofit Library compared to the old fashion more cumbersome technique of OkHttp with AsyncTask of Android SDK.class. Also I implemented nice stuff from RecyclerView interactions such as grad & swipe to the Left to delete. And long-press drag top / bottom and drop to change the location of Items.
 
 I will read data from this json url about Earthquakes:
 
@@ -6,7 +6,8 @@ https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-0
 
 I will show basic information such as location, name time in a RecyclerView
 
-My steps:
+
+--------------- My step by step and reasoning ---------------
 
 1. Adding Retrofit dependency:
 Android has already provided us classes to deal with backend API such as HttpManager and AsyncTask to handle network communication. But this is very complex and time consuming because we need expert skills level to handle complex communications. Retrofit is "type safe" Rest client for Android. I don’t have to worry about parsing complex json structures as when using OkHttp directly, but Retrofit will do it for me 
