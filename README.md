@@ -1,16 +1,21 @@
-The idea is to create a basic App that demonstrates the power of Retrofit Library compared to the old fashion more cumbersome technique of OkHttp with AsyncTask of Android SDK.class. Also I implemented nice stuff from RecyclerView interactions such as grad & swipe to the Left to delete. And long-press drag top / bottom and drop to change the location of Items.
+The idea is to create an App that demonstrates the power of Retrofit Library compared to the old fashion more cumbersome technique of OkHttp and AsyncTask of Android SDK class. Retrofit is the most recommended Library for Android and Java A type-safe Http client. It is recommended to use a certain Architectural pattern (that I describe below) to allow adding End-points to a new Http request using a base Url… Retrofit turns our Http Api into a Java interface and uses a model Java (or Kotlin) class to parse the json that is returned in response.
 
-I will read data from this json url about Earthquakes:
+Android has already provided us classes to deal with backend Api such as HttpManager and AsyncTask to handle network communication. But this is very complex and time consuming because we need expert skills level to handle complex communications. Retrofit is "type safe" Rest client for Android. I don’t have to worry about parsing complex json structures as when using OkHttp directly, but Retrofit will do it for me 
+
+I wanted to make this App to show how all this is working efficiently, produce less errors of types and is really powerful when we want to be able later to add new Api requests of all types and all End-points added to a base-Url
+
+Also I implemented nice stuff from RecyclerView interaction designs such as drag & swipe to the Left to delete and Item. And long-press + drag up or down and drop to change the location of Items.
+
+I am getting data from this url about an Earthquakes Api:
 
 https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02 
 
-I will show basic information such as location, name time in a RecyclerView
+I will show basic information such as location, name and time of all earthquakes in a RecyclerView
 
 
---------------- My step by step and reasoning ---------------
+---------------  How to use Retrofit with its Architecture pattern?
 
 1. Adding Retrofit dependency:
-Android has already provided us classes to deal with backend API such as HttpManager and AsyncTask to handle network communication. But this is very complex and time consuming because we need expert skills level to handle complex communications. Retrofit is "type safe" Rest client for Android. I don’t have to worry about parsing complex json structures as when using OkHttp directly, but Retrofit will do it for me 
 implementation 'com.squareup.retrofit2:retrofit:2.1.0'
 
 2. Add Gson converter to parse the Json to. Retrofit automatically serialises the JSON response into Java class which must be defined in advanced for the JSON Structure
@@ -20,18 +25,17 @@ implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 3. Add Internet permission to manifest 
 <uses-permission android:name="android.permission.INTERNET"/>
 
-4. Open the url of the json in a json browser viewer to have a Idea about the size of data and the structure
+4. I open the url of the json in a json browser viewer to have an Idea about the size of data and the structure (later will be inner classes)
 https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02 
 
-5. I generate classes using some online tools such as this http://pojo.sodhanalibrary.com/ . Those online converters create Java classes for us using a json, but cannot generate classes for the jsons inside jsons, so we need to be aware of structure of the mother json and copy-paste its inner jsons and convert them individually to classes. Those inner jsons will be considered as inner classes in java. So the root json is one huge class and the sons jsons are inner classes.
+5. I generate classes using some online tools (converters) such as this http://pojo.sodhanalibrary.com/  Those online converters create Java classes for us using a json, but cannot generate classes for the jsons inside jsons! So we need to be aware of structure of the root json and copy-paste its inner jsons and convert them individually to generate inner classes! Those inner jsons will be considered as inner classes in java. So the root json is one huge class and the sons jsons are its inner classes.
 
 6. Better to convert / make those classes in Kotlin because we get rid of more than half of the size because there will be no getters & setters and the visibility of the structure will be better than Java.
 
-7. For my case, one root json is represented by EarthquakeRoot.java class that ha:
+7. In my case, one root json is represented by EarthquakeRoot.java class that ha:
 - inner class Metadata
 - inner class Features
-
-and inner class Features will have 2 other inner classes:
+> and inner class Features will have 2 other inner classes:
 - inner class Geometry
 - inner class Properties
 
@@ -40,19 +44,21 @@ and inner class Features will have 2 other inner classes:
 - service
 - view
 
-9. I put the Java class representing the json structure in the “model” package. It is the place where we put all model classes that represent json structures
+9. I put the Java class representing the json structure in the “model” package. It is the place where we put all model classes that represent json structures and that will be used as parsers models
 
 10. The “view” package is where activities and App related views and their components should be located (ex: RecuclerView stuff)
 
 11. The “service” package is where the operations, classes & interface related to the Retrofit are located. We can also call this package “network”
 
 12. In every project that uses Retrofit, we need to have an Interface that holds all the different Http Requests signatures that we want to use in our App. Requests can be Get or Post for example. It is also the place where we define the End-points that should be added to our base-url. A simple example in our context here is this:
+
 Base Url = https://earthquake.usgs.gov/
 And End-Point with all parameters:
-fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02
-The Interface defines some methods that perform HTTP requests with annotation. Also the type of requests and the model class (that we have already created in Kotlin) that should parse the response that we wrote previously
+fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02 
 
-13. Create a class that allows us to get an initialized Retrofit instance that uses the base-url and that later we can use it to call the methods that we wrote or we will write later in our Interface. I call Retrofit Instance class RetrofitInstance and the interface RetrofitCalls.
+> The Interface defines some methods that perform HTTP requests with annotation. Also the type of requests and the model class (that we have already created in Kotlin) that should parse the response that we wrote previously
+
+13. I create a class that allows us to get an initialized Retrofit instance that uses the base-url and that later we can use it to call the methods that we wrote or we will write later in our Interface. I call Retrofit Instance class RetrofitInstance and the interface RetrofitCalls.
 
 14. I write only 1 method in the RetrofitInstance class and it allows me to get an initialized version of the Retrofit instance. I call the method: setupRetrofitCalls(). It will return the single instance in our App RetrofitCalls
 
